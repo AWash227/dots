@@ -14,7 +14,7 @@ alias config='/usr/bin/git --git-dir=$HOME/.dots/ --work-tree=$HOME'
 echo ".dots" >> .gitignore
 
 # Clone my dots into your bare repo
-git clone --bare <git-repo-url> $HOME/.dots
+git clone --bare git@github.com:AWash227/dots.git $HOME/.dots
 
 # Setup the 'dots' alias for use instead of 'git'
 alias dots='/mkdir -p .config-backup && \
