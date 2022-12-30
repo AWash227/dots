@@ -1,0 +1,39 @@
+@theme "gruvbox-dark"
+configuration {
+	modes: [combi];
+	combi-modes: [drun];
+	font: "Fira Code 9";
+}
+
+window {
+	background: black;
+	border: 1px;
+	border-color: white;
+}
+
+
+entry, element-text {
+	text-color: white;
+	font: "Fira Code 9";
+	border-color: white;
+	highlight: bold white;
+}
+
+element active {
+	background-color: black;
+	color: red;
+}
+
+prompt {
+	color: white;
+}
+
+inputbar {
+	background-color: transparent;
+}
+
+listview {
+	border: 1px 0px 0px 0px;	
+	border-color: white;
+}
+
