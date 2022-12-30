@@ -1,25 +1,27 @@
-#
 # ~/.bashrc
-#
+# This file is read by every interactive non-login shell first
+# As such, any aliases and bash related functions should go here
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
-PS1='[\u@\h \W]\$ '
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-[ -d ~/.cargo/bin ] && export PATH="~/.cargo/bin:$PATH"
-
-# Fix Ranger color bug
-export TERM=xterm-256color
+export PS1='[\u@\h \W]\$ ' # Alter prompt
+export TERM=xterm-256color # Fix ranger crashing due to colors
 
 # pnpm
-export PNPM_HOME="/home/andrew/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
+[ -d "~/.local/share/pnpm" ] && export PNPM_DIR="~/.local/share/pnpm";
+export PATH="$PNPM_DIR:$PATH";
+
+# cargo
+[ -d ~/.cargo/bin ] && export CARGO_DIR="~/.cargo/bin"
+export PATH="$CARGO_DIR:$PATH"
+
+# nvm
+[ -d "~/.nvm" ] && export NVM_DIR="~/.nvm";
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh";  # setup nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion";  # setup bash completion
+
 
 # Aliases
-alias dots='/usr/bin/git --git-dir=$HOME/.dots/.git/ --work-tree=$HOME'
+alias dots='/usr/bin/git --git-dir=~/.dots/.git/ --work-tree=~'
+alias ls='ls --color=auto'

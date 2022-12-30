@@ -1,7 +1,5 @@
 # Dots
 
-## What Is This?
-
 This repo contains all of my dotfiles that I'd like to track.
 
 ## Using my dots
