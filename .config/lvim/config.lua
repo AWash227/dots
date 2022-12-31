@@ -13,7 +13,7 @@ lvim.reload_config_on_save = true
 vim.opt.relativenumber = true
 -- general
 lvim.log.level = "warn"
-lvim.colorscheme = "lunar"
+lvim.colorscheme = "pywal"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -166,7 +166,8 @@ linters.setup {
 -- Additional Plugins
 lvim.plugins = {
   { "pantharshit00/vim-prisma" },
-  { "wakatime/vim-wakatime" }
+  { "wakatime/vim-wakatime" },
+  { "AlphaTechnolog/pywal.nvim", as = 'pywal' }
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)

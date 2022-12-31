@@ -23,5 +23,6 @@ export PATH="$CARGO_DIR:$PATH"
 
 
 # Aliases
-alias dots='/usr/bin/git --git-dir=~/.dots/.git/ --work-tree=~'
+alias dots="/usr/bin/git --git-dir=$HOME/.dots/.git/ --work-tree=$HOME"
 alias ls='ls --color=auto'
+alias vim='lvim'
