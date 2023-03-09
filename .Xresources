@@ -1,4 +1,4 @@
-*.font: xft:FiraCode Mono:size=10
+*.font: xft:FiraCode Nerd Font Mono:size=10
 
 Xft.dpi:                        96
 Xft.antialias:                  1

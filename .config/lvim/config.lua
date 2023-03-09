@@ -167,8 +167,19 @@ linters.setup {
 lvim.plugins = {
   { "pantharshit00/vim-prisma" },
   { "wakatime/vim-wakatime" },
-  { "AlphaTechnolog/pywal.nvim", as = 'pywal' }
+  { "AlphaTechnolog/pywal.nvim", as = 'pywal' },
+  { "lervag/vimtex" }
 }
+
+vim.api.nvim_set_option("conceallevel", 1)
+vim.api.nvim_set_var("tex_flavor", "latex")
+vim.api.nvim_set_var("vimtex_view_method", "mupdf")
+vim.api.nvim_set_var("vimtex_view_general_viewer", "mupdf")
+vim.api.nvim_set_var("vimtex_view_general_options", "-reuse-instance u/pdf")
+vim.api.nvim_set_var("vimtex_view_general_options_latexmk", "-reuse-instance")
+vim.api.nvim_set_var("vimtex_quickfix_mode", "0")
+vim.api.nvim_set_var("tex_conceal", "abdmg")
+
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
