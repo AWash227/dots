@@ -26,3 +26,4 @@ export PATH="$CARGO_DIR:$PATH"
 alias dots="/usr/bin/git --git-dir=$HOME/.dots/.git/ --work-tree=$HOME"
 alias ls='ls --color=auto'
 alias vim='lvim'
+alias ranger='cat ~/.cache/wal/sequences & ranger'

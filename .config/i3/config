@@ -2,15 +2,19 @@
 # GENERAL 
 # -------
 
+gaps inner 4
+gaps outer 4
 # Set modifier key to alt
 set $mod Mod4
+set $proj_path ~/projects/professional/mono
+
 
 # Set variables for monitors
-set $m1 DVI-D-0
-set $m2 HDMI-0
+set $m2 DVI-D-0
+set $m1 HDMI-0
 
 # Set display resolution
-exec_always --no-startup-id xrandr --output DVI-D-0 --mode 1600x900 --rate 59.95 --output 
+exec_always --no-startup-id xrandr --output HDMI-0 --mode 1920x1080 --primary --output DVI-D-0 --mode 1600x900 --right-of HDMI-0
 
 font pango:FiraCode Regular 8
 
@@ -26,7 +30,7 @@ new_window pixel 0
 exec_always --no-startup-id xrdb ~/.Xresources
 
 # Apply the last colorscheme generated without changing the background by using -n 
-exec_always --no-startup-id wal -R
+exec_always --no-startup-id wal -i images/nasa.png
 
 # Apply a background different than the one used by wal
 # If this isn't needed, remove it and remove -n flag from the above command
@@ -35,6 +39,9 @@ exec_always --no-startup-id wal -R
 # Execute polybar on launch. Script kills current ones on i3 refresh, otherwise they duplicate
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec_always --no-startup-id picom
+
+
+
 
 
 # ----------------
