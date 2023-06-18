@@ -30,14 +30,14 @@ new_window pixel 0
 exec_always --no-startup-id xrdb ~/.Xresources
 
 # Apply the last colorscheme generated without changing the background by using -n 
-exec_always --no-startup-id wal -i images/nasa.png
+exec_always --no-startup-id wal -i images/track.png
 
 # Apply a background different than the one used by wal
 # If this isn't needed, remove it and remove -n flag from the above command
 #exec_always --no-startup-id feh --bg-max ~/images/concept_art/bebop2.jpg
 
 # Execute polybar on launch. Script kills current ones on i3 refresh, otherwise they duplicate
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+#exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec_always --no-startup-id picom
 
 
@@ -208,19 +208,19 @@ mode "resize" {
 # CUSTOMIZATION
 # -------------
 
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # Finds out, if available)
 bar {
   colors {
     background #00000
-    separator #4C5C9C
-    statusline #e9e4d9
-    focused_workspace $focused_border $focused_border #ffffff
-  }
-        status_command i3status -c /etc/i3status.conf
-        font pango:FiraCode Mono 8
-}
-
+     separator #4C5C9C
+     statusline #e9e4d9
+     focused_workspace $focused_border $focused_border #ffffff
+   }
+         status_command i3status -c /etc/i3status.conf
+         font pango:FiraCode Mono 8
+ }
 
 # Color variables
 set $white #ffffff

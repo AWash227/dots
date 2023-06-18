@@ -68,7 +68,7 @@ lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+lvim.builtin.nvimtree.setup.renderer.icons.show.git = true
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -110,15 +110,16 @@ lvim.builtin.treesitter.highlight.enable = true
 
 ---configure a server manually. !!Requires `:LvimCacheReset` to take effect!!
 ---see the full default list `:lua print(vim.inspect(lvim.lsp.automatic_configuration.skipped_servers))`
-vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "eslint" })
-local opts = {} -- check the lspconfig documentation for a list of all possible options
-require("lvim.lsp.manager").setup("eslint", opts)
+--vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "eslint" })
+--local opts = {} -- check the lspconfig documentation for a list of all possible options
+--require("lvim.lsp.manager").setup("eslint", opts)
+
 
 -- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. !!Requires `:LvimCacheReset` to take effect!!
 -- ---`:LvimInfo` lists which server(s) are skipped for the current filetype
--- lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
---   return server ~= "emmet_ls"
--- end, lvim.lsp.automatic_configuration.skipped_servers)
+lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
+  return server ~= "jsonls"
+end, lvim.lsp.automatic_configuration.skipped_servers)
 
 -- -- you can set a custom on_attach function that will be used for all the language servers
 -- -- See <https://github.com/neovim/nvim-lspconfig#keybindings-and-completion>
@@ -135,20 +136,23 @@ local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "black", filetypes = { "python" } },
   -- { command = "isort", filetypes = { "python" } },
-  {
-    -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
-    name = "prettierd",
-    ---@usage arguments to pass to the formatter
-    -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
-    ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-  },
+  { name = "rome" },
+  { name = "remark" }
+  --{
+  -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
+  --name = "prettierd",
+  ---@usage arguments to pass to the formatter
+  -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
+  ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+  --},
 }
 
 -- -- set additional linters
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
   { command = "flake8", filetypes = { "python" } },
-  -- { name = "eslint_d" },
+  -- { command = "rome",   filetypes = { "typescript" } },
+  { name = "eslint" },
   {
     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
     command = "shellcheck",
@@ -167,8 +171,8 @@ linters.setup {
 lvim.plugins = {
   { "pantharshit00/vim-prisma" },
   { "wakatime/vim-wakatime" },
-  { "AlphaTechnolog/pywal.nvim", as = 'pywal' },
-  { "lervag/vimtex" }
+  { "AlphaTechnolog/pywal.nvim", name = 'pywal' },
+  { "lervag/vimtex" },
 }
 
 vim.api.nvim_set_option("conceallevel", 1)
@@ -176,7 +180,6 @@ vim.api.nvim_set_var("tex_flavor", "latex")
 vim.api.nvim_set_var("vimtex_view_method", "mupdf")
 vim.api.nvim_set_var("vimtex_view_general_viewer", "mupdf")
 vim.api.nvim_set_var("vimtex_view_general_options", "-reuse-instance u/pdf")
-vim.api.nvim_set_var("vimtex_view_general_options_latexmk", "-reuse-instance")
 vim.api.nvim_set_var("vimtex_quickfix_mode", "0")
 vim.api.nvim_set_var("tex_conceal", "abdmg")
 
