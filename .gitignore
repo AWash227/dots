@@ -1,0 +1,27 @@
+# Ignore everything
+*
+
+# Track these config dirs
+!.config/bspwm/
+!.config/bspwm/**
+!.config/sxhkd/
+!.config/sxhkd/**
+!.config/nvim/
+!.config/nvim/**
+!.config/polybar/
+!.config/polybar/**
+!.config/picom/
+!.config/picom/**
+!.config/dunst/
+!.config/dunst/**
+!.config/kitty/
+!.config/kitty/**
+!.config/rofi/
+!.config/rofi/**
+
+# Still ignore generated/log files within tracked dirs
+.config/nvim/.nvimlog
+.config/polybar/bspwm-ws-icons.ini
+
+# Track the gitignore itself
+!.gitignore
