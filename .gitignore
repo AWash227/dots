@@ -1,6 +1,9 @@
 # Ignore everything
 *
 
+# Allow git to traverse into .config/
+!.config/
+
 # Track these config dirs
 !.config/bspwm/
 !.config/bspwm/**
@@ -19,9 +22,12 @@
 !.config/rofi/
 !.config/rofi/**
 
-# Still ignore generated/log files within tracked dirs
+# Still ignore generated/log/state files within tracked dirs
 .config/nvim/.nvimlog
+.config/nvim/.claude/
 .config/polybar/bspwm-ws-icons.ini
 
-# Track the gitignore itself
+# Track top-level dotfiles
+!.bashrc
+!.xinitrc
 !.gitignore
