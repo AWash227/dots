@@ -1,0 +1,9 @@
+configuration {
+  modi: "window";
+  show-icons: false;
+  matching: "fuzzy";
+  case-sensitive: false;
+  sort: true;
+}
+
+@theme "~/.config/rofi/minimal.rasi"

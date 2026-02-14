@@ -1,0 +1,68 @@
+* {
+    font: "FiraCode Nerd Font Mono 10";
+}
+
+window {
+    transparency: "real";
+    background-color: rgba(0, 0, 0, 0.85);  /* black w/ 15% transparency */
+    border: 0px;
+    padding: 6px;
+    width: 30%;
+}
+
+mainbox {
+    background-color: transparent;
+}
+
+inputbar {
+    background-color: rgba(0, 0, 0, 0.85);  /* match window */
+    text-color: #ffffff;
+    padding: 4px 6px;
+    border: 0;
+}
+
+prompt {
+    enabled: false;   /* hide the "window:" prefix */
+}
+
+entry {
+    background-color: transparent;
+    text-color: #ffffff;
+    placeholder-color: #888888;  /* subtle gray for placeholder */
+}
+
+
+
+listview {
+    lines: 12;
+    columns: 1;
+    cycle: false;
+    scrollbar: false;
+    fixed-height: true;
+    spacing: 2px;
+    background-color: transparent;
+}
+
+element {
+    padding: 2px 6px;
+    border: 0;
+    background-color: transparent;
+    text-color: #ffffff;
+}
+
+element selected {
+    background-color: #444444;  /* dark gray highlight */
+    text-color: #ffffff;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+}
+
+
+/* make sure nothing else paints a light chip next to the entry */
+case-indicator {
+  background-color: transparent;
+  text-color: #ffffff;
+}

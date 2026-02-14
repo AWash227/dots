@@ -1,0 +1,233 @@
+########################################
+# sxhkd keybindings for BSPWM
+########################################
+#
+#
+#
+super + shift + r
+  ~/.config/sxhkd/screencast.sh
+
+super + shift + s
+    maim -s | xclip -selection clipboard -t image/png
+
+super + shift + h
+  ~/.config/sxhkd/toggle-headphones.sh
+
+super + shift + v
+  echo -n "toggle" | socat - UNIX-CONNECT:"/tmp/sttdict.sock"
+
+super + v
+  echo -n "paste" | socat - UNIX-CONNECT:"/tmp/sttdict.sock"
+
+super + space
+  rofi -show window
+
+super + d
+  dmenu_run
+
+# Show all keybindings
+super + slash
+    ~/.config/sxhkd/show-keybinds.sh
+
+# Reload sxhkd
+super + Escape
+    pkill -USR1 -x sxhkd
+
+# Quit bspwm
+super + shift + q
+    bspc quit
+
+# Restart bspwm
+super + alt + r
+    bspc wm -r
+
+# Notification controls
+super + n
+    dunstctl history-pop
+
+super + shift + n
+    dunstctl close-all
+
+super + ctrl + n
+    dunstctl set-paused toggle
+
+# Close focused window
+super + w
+    bspc node -c
+
+# Toggle desktop layout (monocle <-> tiled)
+super + m
+    bspc desktop -l next
+
+# Tile the focused window
+super + t
+    bspc node -t tiled -l normal
+
+# Set pseudo-tiled (centered but resizeable)
+super + shift + t
+    bspc node -t pseudo_tiled -l normal
+
+# Set floating
+super + s
+    bspc node -t floating -l normal
+
+# Toggle fullscreen
+super + f
+    bspc node -t ~fullscreen
+
+# Swap with largest window
+super + g
+    bspc node -s biggest
+
+# Mark → move to preselected
+super + y
+    bspc node newest.marked.local -n newest.!automatic.local
+
+# Focus monitor in direction
+super + {comma,period}
+    bspc monitor -f {west,east}
+
+# Move focus (vim-style)
+super + {h,j,k,l}
+    bspc node -f {west,south,north,east}
+
+# Swap windows
+super + shift + {h,j,k,l}
+    bspc node -s {west,south,north,east}
+
+# Preselect direction
+super + ctrl + {h,j,k,l}
+    bspc node -p {west,south,north,east}
+
+# Cancel preselection
+super + ctrl + space
+    bspc node -p cancel
+
+# Quarter-snap windows to corners
+# Top-left
+super + alt + 1
+    bspc node -p north -o 0.5 && bspc node -p west -o 0.5
+
+# Top-right
+super + alt + 2
+    bspc node -p north -o 0.5 && bspc node -p east -o 0.5
+
+# Bottom-left
+super + alt + 3
+    bspc node -p south -o 0.5 && bspc node -p west -o 0.5
+
+# Bottom-right
+super + alt + 4
+    bspc node -p south -o 0.5 && bspc node -p east -o 0.5
+
+# Adjust preselection ratio (10%-90%)
+super + ctrl + {1-9}
+    bspc node -o 0.{1-9}
+
+# Focus next/previous paired workspace
+super + bracket{left,right}
+    ~/.config/bspwm/cycle-workspace.sh {prev,next}
+
+# Go to paired workspace by number
+super + {1-9,0}
+    ~/.config/bspwm/switch-workspace.sh {1,2,3,4,5,6,7,8,9,10}
+
+# Move window to paired workspace
+super + shift + {1-9,0}
+    ~/.config/bspwm/move-to-workspace.sh {1,2,3,4,5,6,7,8,9,10}
+
+# Focus node history
+super + o
+    bspc wm -h off; bspc node older -f; bspc wm -h on
+
+super + i
+    bspc wm -h off; bspc node newer -f; bspc wm -h on
+
+# Set node flags
+super + ctrl + {m,x,y,z}
+    bspc node -g {marked,locked,sticky,private}
+
+# Resize floating windows
+ctrl + alt + {h,j,k,l}
+    bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# Move floating windows
+ctrl + alt + {Left,Down,Up,Right}
+    bspc node -v {-20 0,0 20,0 -20,20 0}
+
+# Resize tiled windows (expand/contract edges)
+super + alt + shift + {h,j,k,l}
+    bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0} || \
+    bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# Increase/decrease gaps on-the-fly
+super + {minus,equal}
+    bspc config window_gap $(($(bspc config window_gap) {-,+} 5))
+
+# Reset gaps to default
+super + 0
+    bspc config window_gap 12
+
+# Rotate tree 90 degrees
+super + r
+    bspc node @/ -R 90
+
+# Balance tree (equalize window sizes)
+super + b
+    bspc node @/ -B
+
+########################################
+# Application Launchers
+########################################
+
+# Launch terminal
+super + Return
+    kitty &
+
+# Launch Firefox
+super + shift + f
+    chromium &
+
+# Launch VS Code
+super + shift + c
+    code &
+
+# File manager (terminal - ranger)
+super + e
+    kitty -e ranger &
+
+# File manager - ranger in home directory
+super + shift + e
+    kitty -e ranger ~ &
+
+# Application launcher with rofi
+super + p
+    rofi -show drun -show-icons
+
+########################################
+# Multimedia Controls
+########################################
+
+# Quick launch pavucontrol for audio output switching
+super + a
+    pavucontrol &
+
+# Show current audio output device
+super + shift + a
+    ~/.config/sxhkd/audio-output-notify.sh
+
+# Volume controls (with notification feedback)
+XF86AudioRaiseVolume
+    pactl set-sink-volume @DEFAULT_SINK@ +5% && \
+    VOLUME=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '\d+%' | head -1) && \
+    notify-send -a "volume" -u low -t 1000 "Volume" "$VOLUME"
+
+XF86AudioLowerVolume
+    pactl set-sink-volume @DEFAULT_SINK@ -5% && \
+    VOLUME=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '\d+%' | head -1) && \
+    notify-send -a "volume" -u low -t 1000 "Volume" "$VOLUME"
+
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle && \
+    MUTED=$(pactl get-sink-mute @DEFAULT_SINK@ | grep -o 'yes' || echo 'no') && \
+    notify-send -a "volume" -u low -t 1000 "Volume" "Muted: $MUTED"

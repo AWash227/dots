@@ -1,0 +1,3 @@
+return {
+  "edeneast/nightfox.nvim"
+}
