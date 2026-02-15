@@ -30,6 +30,7 @@ export NVM_DIR="$HOME/.nvm"
 export OLLAMA_API_BASE=http://127.0.0.1:11434
 export PATH="$CUDA_HOME/bin:$PYENV_ROOT/bin:$PNPM_HOME:$BUN_INSTALL/bin:$PATH"
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+export OLLAMA_CONTEXT_LENGTH=64000
 
 [ -f "$HOME/.env" ] && source "$HOME/.env"
 

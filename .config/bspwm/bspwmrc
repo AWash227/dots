@@ -1,20 +1,60 @@
-#! /bin/sh
+#!/bin/sh
 
-pgrep -x sxhkd > /dev/null || sxhkd &
+# Prevent concurrent restarts (close fd on background children so lock releases when this script exits)
+exec 9>/tmp/bspwmrc.lock
+flock -n 9 || exit 0
 
-SUFFIXES="abcdefghijklmnopqrstuvwxyz"
+# Restart sxhkd + polybar (need config reload on restart)
+pkill -x sxhkd
+pkill -x polybar
+sxhkd 9>&- &
 
-# Dynamically assign paired desktops to all connected monitors
+# Start persistent daemons only if not already running
+pgrep -x picom  > /dev/null || picom --config ~/.config/picom/picom.conf 9>&- &
+pgrep -x fcitx5 > /dev/null || fcitx5 9>&- &
+pgrep -x dunst  > /dev/null || dunst 9>&- &
+pgrep -x redshift > /dev/null || redshift -P -O 2250 &
+
+# Monitor layout
+~/.config/bspwm/monitor-setup.sh
+
+# Theme: accent color derived from hostname
+HASH=$(hostname | md5sum | head -c 6)
+HOST_COLOR="#${HASH}"
+R=$((0x${HASH%????})) G=$((0x${HASH#??} / 256)) B=$((0x${HASH#????}))
+HOST_COLOR_DIM=$(printf '#%02x%02x%02x' $((R*6/10)) $((G*6/10)) $((B*6/10)))
+if [ $(( (299*R + 587*G + 114*B) / 1000 )) -gt 128 ]; then
+    HOST_COLOR_FG="#000000"
+else
+    HOST_COLOR_FG="#ffffff"
+fi
+export HOST_COLOR HOST_COLOR_DIM HOST_COLOR_FG
+cat > ~/.config/bspwm/theme.env <<EOF
+HOST_COLOR=$HOST_COLOR
+HOST_COLOR_DIM=$HOST_COLOR_DIM
+HOST_COLOR_FG=$HOST_COLOR_FG
+EOF
+
+# Assign desktops and generate polybar workspace icons
 MONITORS=$(bspc query -M --names)
 NUM_MONITORS=$(echo "$MONITORS" | wc -l)
+SUFFIXES="abcdefghijklmnopqrstuvwxyz"
+ROMAN="I II III IV V VI VII VIII IX X"
+ICONS_FILE=~/.config/polybar/bspwm-ws-icons.ini
+echo "[module/bspwm]" > "$ICONS_FILE"
+icon_idx=0
 
 if [ "$NUM_MONITORS" -gt 1 ]; then
     i=0
     for mon in $MONITORS; do
         suffix=$(echo "$SUFFIXES" | cut -c$((i+1)))
         desktops=""
-        for n in 1 2 3 4 5 6 7 8 9 10; do
+        n=1
+        for numeral in $ROMAN; do
             desktops="$desktops ${n}${suffix}"
+            echo "ws-icon-${icon_idx} = ${n}${suffix};${numeral}" >> "$ICONS_FILE"
+            icon_idx=$((icon_idx + 1))
+            n=$((n + 1))
         done
         bspc monitor "$mon" -d $desktops
         i=$((i + 1))
@@ -22,54 +62,34 @@ if [ "$NUM_MONITORS" -gt 1 ]; then
     MAIN_SUFFIX="a"
 else
     bspc monitor -d 1 2 3 4 5 6 7 8 9 10
-    MAIN_SUFFIX=""
-fi
-
-# Generate polybar workspace icons
-ICONS_FILE=~/.config/polybar/bspwm-ws-icons.ini
-ROMAN="I II III IV V VI VII VIII IX X"
-echo "[module/bspwm]" > "$ICONS_FILE"
-icon_idx=0
-if [ "$NUM_MONITORS" -gt 1 ]; then
-    i=0
-    for mon in $MONITORS; do
-        suffix=$(echo "$SUFFIXES" | cut -c$((i+1)))
-        n=1
-        for numeral in $ROMAN; do
-            echo "ws-icon-${icon_idx} = ${n}${suffix};${numeral}" >> "$ICONS_FILE"
-            icon_idx=$((icon_idx + 1))
-            n=$((n + 1))
-        done
-        i=$((i + 1))
-    done
-else
     n=1
     for numeral in $ROMAN; do
         echo "ws-icon-${icon_idx} = ${n};${numeral}" >> "$ICONS_FILE"
         icon_idx=$((icon_idx + 1))
         n=$((n + 1))
     done
+    MAIN_SUFFIX=""
 fi
 
-# Launch polybar on each monitor
-pkill -x polybar
+# Launch polybar
 for m in $(polybar --list-monitors | cut -d: -f1); do
-    MONITOR=$m polybar mybar &
+    MONITOR=$m polybar mybar 9>&- &
 done
 
-bspc config border_width         3
-bspc config window_gap          12
+# Appearance
+bspc config border_width          3
+bspc config window_gap            12
+bspc config focused_border_color  "$HOST_COLOR"
+bspc config normal_border_color   "#333333"
+bspc config active_border_color   "#555555"
+bspc config presel_feedback_color "#777777"
 
-# Window border colors for focus indication
-bspc config focused_border_color   "#5e81ac"
-bspc config normal_border_color    "#333333"
-bspc config active_border_color    "#555555"
-bspc config presel_feedback_color  "#777777"
+# Layout
+bspc config split_ratio           0.52
+bspc config borderless_monocle    true
+bspc config gapless_monocle       true
 
-bspc config split_ratio          0.52
-bspc config borderless_monocle   true
-bspc config gapless_monocle      true
-
+# Window rules
 bspc rule -a Gimp desktop="8${MAIN_SUFFIX}" state=floating follow=on
 bspc rule -a stt desktop="8${MAIN_SUFFIX}" state=floating follow=on
 bspc rule -a Chromium desktop="2${MAIN_SUFFIX}"

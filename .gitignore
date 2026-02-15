@@ -25,6 +25,7 @@
 # Still ignore generated/log/state files within tracked dirs
 .config/nvim/.nvimlog
 .config/nvim/.claude/
+.config/bspwm/theme.env
 .config/polybar/bspwm-ws-icons.ini
 
 # Track top-level dotfiles

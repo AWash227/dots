@@ -1,9 +1,11 @@
 #!/bin/bash
 # Shows a colored dot on the focused monitor's bar
+. ~/.config/bspwm/theme.env
+
 print_status() {
     FOCUSED=$(bspc query -M -m focused --names)
     if [ "$FOCUSED" = "$MONITOR" ]; then
-        echo "%{F#5e81ac}●%{F-}"
+        echo "%{F${HOST_COLOR}}●%{F-}"
     else
         echo "%{F#555555}●%{F-}"
     fi

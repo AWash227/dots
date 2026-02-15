@@ -1,5 +1,5 @@
 #!/bin/bash
-# Parse sxhkdrc and display keybindings in rofi
+# Parse sxhkdrc and display keybindings in rofi on the focused monitor
 awk '
 /^#{3,}/ { next }
 /^#/ {
@@ -15,4 +15,4 @@ awk '
     next
 }
 { desc = "" }
-' ~/.config/sxhkd/sxhkdrc | rofi -dmenu -i -p "Keybindings" -no-custom
+' ~/.config/sxhkd/sxhkdrc | rofi -dmenu -i -p "Keybindings" -no-custom -m "$(bspc query -M -m focused --names)"
